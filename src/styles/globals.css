@@ -1,0 +1,285 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:is(.dark *));
+
+/* ─────────────────────────────────────────────
+   Design system tokens
+   8px spacing · surfaces & accents from #040f16
+   ───────────────────────────────────────────── */
+
+@theme {
+  --font-heading: "Space Grotesk", system-ui, sans-serif;
+  --font-body: "Bricolage Grotesque", system-ui, sans-serif;
+  --font-mono: ui-monospace, "Cascadia Code", "SF Mono", Menlo, Consolas, monospace;
+
+  /* Dark defaults — shade ladder of #040f16 */
+  --color-bg: #040f16;
+  --color-surface: #091820;
+  --color-surface-2: #0e1f29;
+  --color-border: #1a3342;
+  --color-border-subtle: #132833;
+  --color-text: #e6ecef;
+  --color-muted: #8a9da8;
+  --color-muted-2: #5c717d;
+  --color-accent: #9eb5c1;
+  --color-accent-press: #7d96a4;
+  --color-accent-soft: color-mix(in srgb, #9eb5c1 14%, transparent);
+  --color-success: #3dcc8c;
+  --color-success-soft: color-mix(in srgb, #3dcc8c 14%, transparent);
+  --color-warn: #e0b44a;
+  --color-warn-soft: color-mix(in srgb, #e0b44a 14%, transparent);
+  --color-danger: #e86a6a;
+  --color-danger-soft: color-mix(in srgb, #e86a6a 14%, transparent);
+
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --duration-fast: 150ms;
+  --duration-base: 200ms;
+  --duration-slow: 300ms;
+}
+
+:root {
+  /* Light: soft neutrals; text & accent from #040f16 family */
+  --bg: #f3f5f6;
+  --surface: #fafbfc;
+  --surface-2: #eceff1;
+  --border: #cfd6db;
+  --border-subtle: #e2e7ea;
+  --text: #040f16;
+  --muted: #3d4f59;
+  --muted-2: #6a7c86;
+  --accent: #1a3342;
+  --accent-press: #0e1f29;
+  --accent-soft: color-mix(in srgb, #040f16 10%, transparent);
+  --success: #0d8f5f;
+  --success-soft: color-mix(in srgb, #0d8f5f 12%, transparent);
+  --warn: #a67c00;
+  --warn-soft: color-mix(in srgb, #a67c00 12%, transparent);
+  --danger: #c43d3d;
+  --danger-soft: color-mix(in srgb, #c43d3d 12%, transparent);
+  --shadow-sm: 0 1px 2px color-mix(in srgb, #040f16 5%, transparent);
+  --shadow-md: 0 4px 16px color-mix(in srgb, #040f16 7%, transparent);
+  --ring: var(--accent);
+  --space-1: 8px;
+  --space-2: 16px;
+  --space-3: 24px;
+  --space-4: 32px;
+  --space-5: 40px;
+  --space-6: 48px;
+  --space-8: 64px;
+}
+
+.dark {
+  --bg: #040f16;
+  --surface: #091820;
+  --surface-2: #0e1f29;
+  --border: #1a3342;
+  --border-subtle: #132833;
+  --text: #e6ecef;
+  --muted: #8a9da8;
+  --muted-2: #5c717d;
+  /* Light slate accents from the same base — not sky blue */
+  --accent: #9eb5c1;
+  --accent-press: #7d96a4;
+  --accent-soft: color-mix(in srgb, #9eb5c1 14%, transparent);
+  --success: #3dcc8c;
+  --success-soft: color-mix(in srgb, #3dcc8c 14%, transparent);
+  --warn: #e0b44a;
+  --warn-soft: color-mix(in srgb, #e0b44a 14%, transparent);
+  --danger: #e86a6a;
+  --danger-soft: color-mix(in srgb, #e86a6a 14%, transparent);
+  --shadow-sm: 0 1px 2px color-mix(in srgb, #000 40%, transparent);
+  --shadow-md: 0 8px 24px color-mix(in srgb, #000 35%, transparent);
+  --ring: var(--accent);
+}
+
+@layer base {
+  *,
+  *::before,
+  *::after {
+    border-color: var(--border);
+  }
+
+  html {
+    color-scheme: dark;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    scroll-behavior: smooth;
+  }
+
+  html:not(.dark) {
+    color-scheme: light;
+  }
+
+  body {
+    margin: 0;
+    min-height: 100dvh;
+    background-color: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 15px;
+    line-height: 1.55;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    line-height: 1.2;
+    color: var(--text);
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  button,
+  [role="button"],
+  a[href],
+  summary,
+  select,
+  label[for],
+  input[type="checkbox"],
+  input[type="radio"] {
+    cursor: pointer;
+  }
+
+  button:disabled,
+  [aria-disabled="true"] {
+    cursor: not-allowed;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+
+  ::selection {
+    background-color: var(--accent-soft);
+    color: var(--text);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer utilities {
+  .font-heading {
+    font-family: var(--font-heading);
+  }
+
+  .font-body {
+    font-family: var(--font-body);
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+  }
+
+  /* Motion utilities */
+  .transition-ui {
+    transition-property: color, background-color, border-color, opacity, box-shadow, transform;
+    transition-duration: var(--duration-base);
+    transition-timing-function: var(--ease-out);
+  }
+
+  .transition-fast {
+    transition-property: color, background-color, border-color, opacity, box-shadow, transform;
+    transition-duration: var(--duration-fast);
+    transition-timing-function: var(--ease-out);
+  }
+
+  .animate-fade-in {
+    animation: fs-fade-in var(--duration-slow) var(--ease-out) both;
+  }
+
+  .animate-slide-up {
+    animation: fs-slide-up var(--duration-slow) var(--ease-out) both;
+  }
+
+  .animate-scale-in {
+    animation: fs-scale-in var(--duration-base) var(--ease-out) both;
+  }
+
+  .glass-header {
+    background: color-mix(in srgb, var(--bg) 78%, transparent);
+    backdrop-filter: blur(12px) saturate(1.2);
+    -webkit-backdrop-filter: blur(12px) saturate(1.2);
+  }
+}
+
+@keyframes fs-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fs-slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fs-scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes fs-shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes fs-pulse-soft {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.55;
+  }
+}

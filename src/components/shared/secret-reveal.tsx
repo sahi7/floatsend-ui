@@ -1,0 +1,91 @@
+import { useState } from 'react'
+import { AlertTriangle } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { Checkbox } from '@/components/ui/checkbox'
+import { Label } from '@/components/ui/label'
+import { CopyButton } from '@/components/shared/copy-button'
+
+interface SecretRevealProps {
+  secret: string
+  title?: string
+  message?: string
+  checkboxLabel?: string
+  onDone: () => void
+  continueLabel?: string
+  onContinue?: () => void
+}
+
+/** One-time secret screen — block dismiss until user confirms save */
+export function SecretReveal({
+  secret,
+  title = 'Secret',
+  message,
+  checkboxLabel = 'I stored this secret securely',
+  onDone,
+  continueLabel = 'Done',
+  onContinue,
+}: SecretRevealProps) {
+  const [stored, setStored] = useState(false)
+
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="secret-title"
+    >
+      <div className="w-full max-w-lg rounded-[var(--radius-xl)] border border-[var(--border)] bg-[var(--surface)] p-6">
+        <div className="mb-4 flex items-start gap-3 rounded-[var(--radius-md)] border border-[var(--warn)]/40 bg-[var(--warn-soft)] p-3 text-sm text-[var(--warn)]">
+          <AlertTriangle className="mt-0.5 size-4 shrink-0" aria-hidden />
+          <p>
+            {message ||
+              'Store this secret securely. It will not be shown again.'}
+          </p>
+        </div>
+
+        <h2 id="secret-title" className="font-heading text-lg font-semibold">
+          {title}
+        </h2>
+        <p className="mt-1 text-sm text-[var(--muted)]">
+          Copy it now. Do not share on shared devices.
+        </p>
+
+        <div className="mt-4 flex items-start gap-2 rounded-[var(--radius-md)] border border-[var(--border)] bg-[var(--bg)] p-3">
+          <code className="flex-1 break-all font-mono text-sm leading-relaxed">
+            {secret}
+          </code>
+          <CopyButton value={secret} size="icon" />
+        </div>
+
+        <div className="mt-5 flex items-center gap-2">
+          <Checkbox
+            id="stored-secret"
+            checked={stored}
+            onCheckedChange={(v) => setStored(v === true)}
+          />
+          <Label htmlFor="stored-secret" className="text-sm font-normal">
+            {checkboxLabel}
+          </Label>
+        </div>
+
+        <div className="mt-6 flex flex-col gap-2 sm:flex-row sm:justify-end">
+          {onContinue && (
+            <Button
+              variant="secondary"
+              disabled={!stored}
+              onClick={() => {
+                onContinue()
+                onDone()
+              }}
+            >
+              {continueLabel}
+            </Button>
+          )}
+          <Button disabled={!stored} onClick={onDone}>
+            {onContinue ? 'Close' : continueLabel}
+          </Button>
+        </div>
+      </div>
+    </div>
+  )
+}
