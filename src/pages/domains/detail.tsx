@@ -12,6 +12,7 @@ import {
 } from 'lucide-react'
 import { PageHeader } from '@/components/shared/page-header'
 import { DnsRecordCard } from '@/components/shared/dns-record-card'
+import { DnsZoneTip } from '@/components/shared/dns-zone-tip'
 import { SesDnsTable } from '@/components/shared/ses-dns-table'
 import { StatusChip } from '@/components/shared/status-chip'
 import { ErrorAlert } from '@/components/shared/error-alert'
@@ -308,6 +309,8 @@ export function DomainDetailPage() {
             </p>
           </div>
 
+          <DnsZoneTip domain={domain.domain} defaultOpen />
+
           <DnsRecordCard
             title="Ownership TXT"
             record={domain.ownership_record}
@@ -353,6 +356,8 @@ export function DomainDetailPage() {
             </div>
             {domain.ses_status && <StatusChip status={domain.ses_status} />}
           </div>
+
+          <DnsZoneTip domain={domain.domain} />
 
           {(domain.last_verification_error ||
             (domain.ses_status === 'failed' && domain.last_error)) && (
